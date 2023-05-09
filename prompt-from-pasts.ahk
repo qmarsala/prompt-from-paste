@@ -26,7 +26,7 @@ resolver() {
 }
 
 pasteQuestion() {
-    question := "Question: " . A_Clipboard
+    global question := "Question: " . A_Clipboard
     paste(question)
     paste(newLineSeperator)
 }
@@ -35,10 +35,11 @@ pasteQuestion() {
 ; - but it would be cool if we could copy several options and then paste them each with
 ; - the correct `Option X:` prefix
 pasteAnswerOption() {
-    answer := "Answer Option 1:" . A_Clipboard
+    global answer := "Answer Option 1:" . A_Clipboard
     inputToSend :=
     (
-        question
+        "`""
+        . question
         . newLineSeperator
         . answer
         . "`""
@@ -48,7 +49,7 @@ pasteAnswerOption() {
 }
 
 pasteResearchFindings() {
-    flaws := A_Clipboard
+    global flaws := A_Clipboard
     inputToSend :=
     (
         "`""
