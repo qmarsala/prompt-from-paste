@@ -22,19 +22,7 @@ chainOfThought() {
 }
 
 reflexion() {
-    if (answers.Length < 1)
-    {
-        answers.Push(A_Clipboard)
-    }
-
-    currentAnswer := ""
-    count := 1
-    for a in answers
-    {
-        currentAnswer .= "Answer Option " count ":" a newLineSeperator
-        count++
-    }
-    global answer := RTrim(currentAnswer, "`n")
+    global answer := collectAnswerOptions()
     inputToSend := quote(question) . newLineSeperator . quote(answer) . newLineSeperator
     paste(inputToSend)
     paste("You are a researcher tasked with investigating the response options provided. List the flaws and faulty logic of each answer option. Let's work this out in a step way to be sure we have all the errors:")
@@ -51,6 +39,22 @@ pushAnswer() {
     SendInput("^c")
     Sleep(25)
     answers.Push(A_Clipboard)
+}
+
+collectAnswerOptions() { 
+    if (answers.Length < 1)
+    {
+        answers.Push(A_Clipboard)
+    }
+    
+    currentAnswer := ""
+    count := 1
+    for a in answers
+    {
+        currentAnswer .= "Answer Option " count ": " a newLineSeperator
+        count++
+    }
+    return RTrim(currentAnswer, "`n")
 }
 
 quote(text) {
