@@ -5,65 +5,67 @@ SetWorkingDir A_ScriptDir
 ^+f2::reflexion()
 ^+f3::resolver()
 
-newLineSeperator := "+{Enter}+{Enter}"
-question := ""
-answer := ""
-flaws := ""
+newLineSeperator := "`n`n"
+question := "default q"
+answer := "default a"
+flaws := "default f"
 
 chainOfThought() {
     pasteQuestion()
-    SendInput("Answer: Let's work this out in a step by step way to be sure we have the right answer.")
+    paste("Answer: Let's work this out in a step by step way to be sure we have the right answer.")
 }
 
 reflexion() {
     pasteAnswerOption()
-    SendInput("You are a researcher tasked with investigating the response options provided.+{Enter}List the flaws and faulty logic of each answer option.+{Enter}Let's work this out in a step way to be sure we have all the errors:")
+    paste("You are a researcher tasked with investigating the response options provided.`nList the flaws and faulty logic of each answer option.`nLet's work this out in a step way to be sure we have all the errors:")
 }
 
 resolver() {
     pasteResearchFindings()
-    SendInput("You are a resolver tasked with +{Enter}1) finding which of the answer options the researcher thought was the best +{Enter}2) improving that answer; and +{Enter}3) Printing the improved answer in full.+{Enter}Let's work this out in a step by step way to be sure we have the right answer:")
+    paste("You are a resolver tasked with `n1) finding which of the answer options the researcher thought was the best `n2) improving that answer; and `n3) Printing the improved answer in full.`nLet's work this out in a step by step way to be sure we have the right answer:")
 }
 
 pasteQuestion() {
-    question := A_Clipboard
-    inputToSend := 
-    (
-        "Question: " 
-        . question 
-        . newLineSeperator
-    )
-    SendInput(inputToSend)
+    question := "Question: " . A_Clipboard
+    paste(question)
+    paste(newLineSeperator)
 }
 
 ;todo: probably should just write a app that calls the api
 ; - but it would be cool if we could copy several options and then paste them each with
 ; - the correct `Option X:` prefix
 pasteAnswerOption() {
-    answer := A_Clipboard
+    answer := "Answer Option 1:" . A_Clipboard
     inputToSend :=
-    ( 
-        "`"Question: " 
-        . question 
-        . newLineSeperator 
-        . "Answer Option 1:" 
+    (
+        question
+        . newLineSeperator
         . answer
         . "`""
         . newLineSeperator
     )
-    SendInput(inputToSend)
+    paste(inputToSend)
 }
 
 pasteResearchFindings() {
     flaws := A_Clipboard
-    inputToSend := 
+    inputToSend :=
     (
-        "`"" 
+        "`""
         . question
+        . newLineSeperator
         . answer
+        . newLineSeperator
         . flaws
         . "`""
         . newLineSeperator
     )
-    SendInput(inputToSend)
+    paste(inputToSend)
+}
+
+paste(thing) {
+    A_Clipboard := thing
+    Sleep(25)
+    SendInput("^v")  
+    Sleep(25)
 }
